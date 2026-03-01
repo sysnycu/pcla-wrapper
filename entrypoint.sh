@@ -1,4 +1,4 @@
 #!/bin/bash
-pushd /workspace
+pushd /app
 python PCLA-wrapper/server.py
 popd

@@ -16,6 +16,6 @@ ADD PCLA-wrapper/PCLA/dist/carla-0.9.16-cp38-cp38-linux_x86_64.whl /tmp/wheel/ca
 
 RUN pip install /tmp/wheel/carla-0.9.16-cp38-cp38-linux_x86_64.whl
 
-COPY . /workspace
+COPY . /app
 
-WORKDIR /workspace
+WORKDIR /app
