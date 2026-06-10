@@ -1,0 +1,7 @@
+.git
+.venv
+__pycache__
+.pytest_cache
+.ruff_cache
+tests
+PCLA_WRAPPER_CODEX_PROMPT.md

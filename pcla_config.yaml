@@ -1,45 +1,30 @@
-## PCLA wrapper config
+# Backward-compatible filename for the canonical flat PCLA wrapper config.
+# See config_example.yaml for all supported keys and docs/configuration.md for
+# precedence, validation, and legacy nested-config behavior.
+pcla_agent: carl_plant_3
+pcla_root: /app/PCLA-wrapper/PCLA
+route_xml_path: null
+route_waypoint_distance: 2.0
+route_draw: false
 
-pcla:
-  # PCLA agent name. Examples:
-  # - "carl_plant" (uses PlanT agent from CaRL family)
-  # - "tfv5_alltowns"
-  # - "tfv6_regnet"
-  agent: "carl_plant_3"
-  # agent: "neat_neat"
+launch_carla_server: true
+carla_connect_timeout_seconds: 30.0
+retry_interval_seconds: 2.0
+carla_timeout: 10.0
 
-  # Optional: explicit PCLA root path. If omitted, defaults to ./PCLA-wrapper/PCLA
-  # pcla_root: "/workspace/PCLA-wrapper/PCLA"
+sync: true
+no_rendering: true
+xodr_root: /mnt/map/xodr
+reuse_generated_world: true
+manage_traffic_manager_sync: false
 
-  # Optional: prebuilt route XML. If omitted, route will be generated from spawn/goal.
-  # route_path: "PCLA/sample_route.xml"
+ego_role_name: hero
+ego_bp_id: vehicle.tesla.model3
+spawn_z_offset: 3.0
 
-  # Auto-route generation settings
-  # route_waypoint_distance: 2.0
-  # route_draw: false
-  # route_cache_dir: "pcla_routes"
-
-carla:
-  host: "localhost"
-  port: 2000
-  timeout: 10.0
-
-  # Optional CARLA python API settings
-  # carla_root: "/opt/carla-0.9.16"
-  # carla_egg: "/opt/carla-0.9.16/PythonAPI/carla/dist/carla-0.9.16-py3.8-linux-x86_64.egg"
-
-  # World settings
-  sync: true
-  no_rendering: false
-  fixed_delta_seconds: 0.05
-
-  # Ego vehicle settings
-  ego_role_name: "hero"
-  ego_bp_id: "vehicle.tesla.model3"
-  spawn_z_offset: 1.0
-  # Yaw unit from upstream observation: "rad" or "deg"
-  yaw_unit: "rad"
-
-  # Map settings
-  # xodr_root: "/mnt/map/xodr"
-  # carla_map_name: "Town02"
+coordinate_y_sign: -1.0
+yaw_sign: -1.0
+steer_sign: -1.0
+yaw_offset_deg: 0.0
+object_identity_mode: stateless
+action_none_timeout_seconds: 0.0

@@ -1,13 +1,30 @@
 [project]
-name = "autoware-wrapper"
-version = "0.1.0"
-description = "Add your description here"
+name = "pcla-wrapper"
+version = "0.2.0"
+description = "PISA AV service wrapper for PCLA agents"
 readme = "README.md"
-requires-python = "==3.10.*"
+requires-python = ">=3.8,<3.11"
 dependencies = [
-    "numpy>=2.2.6",
-    "sbsvf-api",
+    "pisa-api>=0.3.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
 ]
 
 [tool.uv.sources]
-sbsvf-api = { git = "https://github.com/lolainta/sbsvf-api.git" }
+pisa-api = { git = "https://github.com/pisa-hut/pisa-api.git" }
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+extend-exclude = ["PCLA-wrapper/PCLA"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501", "UP045"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

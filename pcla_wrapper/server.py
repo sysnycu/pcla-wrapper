@@ -1,5 +1,3 @@
-"""Compatibility entry point for the legacy script path."""
-
 from pisa_api.av import serve_av_system
 from pisa_api.wrapper import setup_logging
 

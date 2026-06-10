@@ -1,0 +1,6 @@
+sh: 1: xdg-user-dir: not found
+LowLevelFatalError [File:Unknown] [Line: 136] 
+Exception thrown: bind: Address already in use
+Signal 11 caught.
+Malloc Size=65538 LargeMemoryPoolOffset=65554 
+Segmentation fault (core dumped)
