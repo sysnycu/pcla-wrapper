@@ -415,6 +415,22 @@ def test_plant2_generates_bev_masks_for_dynamic_opendrive_maps():
     assert "from .traffic_light import TrafficLightHandler" in generator
 
 
+def test_carl_generates_bev_masks_for_dynamic_opendrive_maps():
+    manager = Path(
+        "PCLA-wrapper/PCLA/pcla_agents/carl/birds_eye_view/bev_observation.py"
+    ).read_text(encoding="utf-8")
+    generator = Path(
+        "PCLA-wrapper/PCLA/pcla_agents/carl/birds_eye_view/birdview_map_opencv.py"
+    ).read_text(encoding="utf-8")
+    agent = Path("PCLA-wrapper/PCLA/pcla_agents/carl/eval_agent.py").read_text(encoding="utf-8")
+
+    assert "map_name != 'OpenDriveMap'" in manager
+    assert "MapImage.draw_map_image(" in manager
+    assert "precision=0.5" in manager
+    assert "dtype=np.uint8" in generator
+    assert "if not self.initialized:" in agent
+
+
 def test_neat_agents_use_world_route_in_native_coordinate_frame():
     planner = Path("PCLA-wrapper/PCLA/pcla_agents/neat/planner.py").read_text(encoding="utf-8")
     assert "def set_route_world(self, global_plan):" in planner
@@ -881,7 +897,7 @@ def test_driving_state_log_includes_heading_and_converted_steer(caplog):
     adapter._vehicle.get_velocity = lambda: adapter._vehicle.velocity
     action = SimpleNamespace(throttle=0.5, brake=0.0, steer=0.25)
 
-    with caplog.at_level("INFO", logger="pcla_wrapper.pcla_av"):
+    with caplog.at_level("DEBUG", logger="pcla_wrapper.pcla_av"):
         adapter._log_driving_state(kinematic(x=5, yaw=0.1, speed=5), action)
 
     assert "heading_error_deg=-10.000" in caplog.text
