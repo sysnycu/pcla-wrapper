@@ -320,6 +320,10 @@ def test_pretrained_weights_are_external_and_reproducible():
     downloader = Path("scripts/download_pcla_pretrained.sh").read_text(encoding="utf-8")
 
     assert "PCLA-wrapper/PCLA/pcla_agents/*_pretrained/" in dockerignore
+    assert (
+        "PCLA-wrapper/PCLA/pcla_agents/plant*/carla_garage/speed_limits/"
+        "OpenDriveMap_speed_limits.npy"
+    ) in dockerignore
     assert 'ln -s "/opt/pcla-pretrained/${name}"' in dockerfile
     assert "ENV PCLA_PRETRAINED_ROOT=/opt/pcla-pretrained" in dockerfile
     assert 'export PCLA_PRETRAINED_ROOT="${PCLA_PRETRAINED_ROOT:-' in entrypoint
@@ -345,6 +349,19 @@ def test_plant_privileged_route_index_tracks_actual_prefix():
     ).read_text(encoding="utf-8")
     assert "self.route_index = 0" in source
     assert "self.route_index += self.points_per_meter" in source
+
+
+def test_plant_planners_compute_dynamic_opendrive_speed_limits():
+    for agent in ("plant", "plant2"):
+        source = Path(
+            f"PCLA-wrapper/PCLA/pcla_agents/{agent}/carla_garage/privileged_route_planner.py"
+        ).read_text(encoding="utf-8")
+        assert 'map_name == "OpenDriveMap"' in source
+        assert "carla_map.to_opendrive()" in source
+        assert '"mph": 1.609344' in source
+        assert "previous_speed_limit = 50.0" in source
+        assert "previous_speed_limit / 3.6" in source
+        assert "if speed_limit <= category" in source
 
 
 def test_neat_agents_use_world_route_in_native_coordinate_frame():

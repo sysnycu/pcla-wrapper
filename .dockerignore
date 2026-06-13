@@ -12,3 +12,4 @@ output/
 # host and mount pcla_agents at /opt/pcla-pretrained; entrypoint.sh links only
 # the *_pretrained directories into the image's PCLA source tree.
 PCLA-wrapper/PCLA/pcla_agents/*_pretrained/
+PCLA-wrapper/PCLA/pcla_agents/plant*/carla_garage/speed_limits/OpenDriveMap_speed_limits.npy
