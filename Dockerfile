@@ -53,6 +53,28 @@ RUN uv pip install --python /opt/conda/envs/PCLA/bin/python \
 
 COPY . /app
 RUN set -eux; \
+    canonical_maps=/app/PCLA-wrapper/PCLA/pcla_agents/plant2/carla_garage/birds_eye_view; \
+    for agent in simlingo transfuserv5; do \
+        agent_maps="/app/PCLA-wrapper/PCLA/pcla_agents/${agent}/birds_eye_view"; \
+        for map_cache in maps_2ppm_cv maps_4ppm_cv maps_8ppm_cv maps_high_res; do \
+            ln -s "${canonical_maps}/${map_cache}" "${agent_maps}/${map_cache}"; \
+        done; \
+    done; \
+    ln -s "${canonical_maps}/maps_2ppm_cv" \
+        /app/PCLA-wrapper/PCLA/pcla_agents/carl/birds_eye_view/maps_2ppm_cv; \
+    ln -s "${canonical_maps}/maps_2ppm_cv" \
+        /app/PCLA-wrapper/PCLA/pcla_agents/transfuserv6/lead/expert/hdmap/maps_2ppm_cv; \
+    canonical_speed_limits=/app/PCLA-wrapper/PCLA/pcla_agents/plant/carla_garage/speed_limits; \
+    for agent_speed_limits in \
+        /app/PCLA-wrapper/PCLA/pcla_agents/plant2/carla_garage/speed_limits \
+        /app/PCLA-wrapper/PCLA/pcla_agents/simlingo/speed_limits \
+        /app/PCLA-wrapper/PCLA/pcla_agents/transfuserv5/speed_limits; \
+    do \
+        for speed_limit in "${canonical_speed_limits}"/*_speed_limits.npy; do \
+            ln -s "${speed_limit}" "${agent_speed_limits}/$(basename "${speed_limit}")"; \
+        done; \
+    done
+RUN set -eux; \
     for name in \
         carl_pretrained \
         interfuser_pretrained \
