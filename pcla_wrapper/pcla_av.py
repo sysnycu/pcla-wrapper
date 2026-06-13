@@ -880,7 +880,7 @@ class PclaAV:
                 )
             )
             heading_error = self._normalize_degrees(route_heading - transform.rotation.yaw)
-        logger.info(
+        logger.debug(
             "Driving state step=%d timestamp_ns=%d "
             "PISA pose=(%.3f, %.3f, %.3f) yaw_rad=%.6f speed=%.3f "
             "CARLA pose=%s yaw_deg=%.3f speed=%.3f "
