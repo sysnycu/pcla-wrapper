@@ -79,6 +79,10 @@ RUN uv pip install --python /opt/conda/envs/PCLA/bin/python \
         --editable /app/PCLA-wrapper/PCLA/pcla_agents/lmdrive/vision_encoder \
         --editable /app/PCLA-wrapper/PCLA/pcla_agents/lmdrive/LAVIS
 RUN test -f /app/PCLA-wrapper/PCLA/PCLA.py \
+    && grep -q 'map_name == "OpenDriveMap"' \
+        /app/PCLA-wrapper/PCLA/pcla_agents/plant2/carla_garage/privileged_route_planner.py \
+    && grep -q 'MapImage.draw_map_image' \
+        /app/PCLA-wrapper/PCLA/pcla_agents/plant2/carla_garage/birds_eye_view/chauffeurnet.py \
     && chmod +x \
         /app/entrypoint.sh \
         /app/carla_server.sh \

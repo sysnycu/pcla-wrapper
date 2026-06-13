@@ -326,6 +326,8 @@ def test_pretrained_weights_are_external_and_reproducible():
     ) in dockerignore
     assert 'ln -s "/opt/pcla-pretrained/${name}"' in dockerfile
     assert "ENV PCLA_PRETRAINED_ROOT=/opt/pcla-pretrained" in dockerfile
+    assert 'map_name == "OpenDriveMap"' in dockerfile
+    assert "MapImage.draw_map_image" in dockerfile
     assert 'export PCLA_PRETRAINED_ROOT="${PCLA_PRETRAINED_ROOT:-' in entrypoint
     assert "https://github.com/sysnycu/PCLA.git" in gitmodules
     assert "branch = pisa-integration" in gitmodules
@@ -362,6 +364,22 @@ def test_plant_planners_compute_dynamic_opendrive_speed_limits():
         assert "previous_speed_limit = 50.0" in source
         assert "previous_speed_limit / 3.6" in source
         assert "if speed_limit <= category" in source
+
+
+def test_plant2_generates_bev_masks_for_dynamic_opendrive_maps():
+    manager = Path(
+        "PCLA-wrapper/PCLA/pcla_agents/plant2/carla_garage/birds_eye_view/chauffeurnet.py"
+    ).read_text(encoding="utf-8")
+    generator = Path(
+        "PCLA-wrapper/PCLA/pcla_agents/plant2/carla_garage/birds_eye_view/birdview_map_opencv.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'self._town != "OpenDriveMap"' in manager
+    assert "MapImage.draw_map_image(" in manager
+    assert "precision=0.5" in manager
+    assert "TrafficLightHandler.reset(self._world)" in manager
+    assert "dtype=np.uint8" in generator
+    assert "from .traffic_light import TrafficLightHandler" in generator
 
 
 def test_neat_agents_use_world_route_in_native_coordinate_frame():
