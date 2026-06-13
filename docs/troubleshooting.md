@@ -108,7 +108,7 @@ the current Reset output directory.
 Agent names must use `<family>_<variant>[_seed]`. Inspect:
 
 ```bash
-python -m json.tool PCLA-wrapper/PCLA/agents.json
+python -m json.tool PCLA/agents.json
 ```
 
 The optional seed must be numeric. Do not infer a variant from a directory name;

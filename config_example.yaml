@@ -18,14 +18,14 @@
 # -----------------------------------------------------------------------------
 
 # Agent registry name in the form <family>_<variant>[_seed].
-# The family and variant must exist in PCLA-wrapper/PCLA/agents.json.
+# The family and variant must exist in PCLA/agents.json.
 # Examples: plant2_plant2_0, carl_plant_3, tfv5_alltowns, tfv6_regnet,
 # neat_neat.
 pcla_agent: carl_plant_3
 
 # PCLA source root containing PCLA.py, agents.json, leaderboard_codes, and
 # pcla_agents. The Docker image uses this path.
-pcla_root: /app/PCLA-wrapper/PCLA
+pcla_root: /app/PCLA
 
 # Official pretrained weights are intentionally excluded from the Docker build
 # context. Mount the host pcla_agents directory at /opt/pcla-pretrained:ro.
@@ -33,7 +33,7 @@ pcla_root: /app/PCLA-wrapper/PCLA
 # fixed mount location. No startup write access to /app is required.
 #
 # docker run ... \
-#   -v "$PWD/PCLA-wrapper/PCLA/pcla_agents:/opt/pcla-pretrained:ro" \
+#   -v "$PWD/PCLA/pcla_agents:/opt/pcla-pretrained:ro" \
 #   pcla-wrapper
 #
 # PCLA_PRETRAINED_ROOT is fixed to /opt/pcla-pretrained.

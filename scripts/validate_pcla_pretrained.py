@@ -43,7 +43,7 @@ def main() -> int:
     parser.add_argument(
         "--pcla-root",
         type=Path,
-        default=Path("PCLA-wrapper/PCLA"),
+        default=Path("PCLA"),
         help="directory containing agents.json and pcla_agents",
     )
     args = parser.parse_args()

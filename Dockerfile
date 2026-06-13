@@ -46,29 +46,29 @@ COPY pyproject.toml uv.lock README.md ./
 ENV UV_PROJECT_ENVIRONMENT=/opt/conda/envs/PCLA
 RUN uv sync --locked --no-dev --inexact
 
-COPY PCLA-wrapper/PCLA/dist/carla-0.9.16-cp38-cp38-linux_x86_64.whl /tmp/
+COPY PCLA/dist/carla-0.9.16-cp38-cp38-linux_x86_64.whl /tmp/
 RUN uv pip install --python /opt/conda/envs/PCLA/bin/python \
     /tmp/carla-0.9.16-cp38-cp38-linux_x86_64.whl \
     && rm /tmp/carla-0.9.16-cp38-cp38-linux_x86_64.whl
 
 COPY . /app
 RUN set -eux; \
-    canonical_maps=/app/PCLA-wrapper/PCLA/pcla_agents/plant2/carla_garage/birds_eye_view; \
+    canonical_maps=/app/PCLA/pcla_agents/plant2/carla_garage/birds_eye_view; \
     for agent in simlingo transfuserv5; do \
-        agent_maps="/app/PCLA-wrapper/PCLA/pcla_agents/${agent}/birds_eye_view"; \
+        agent_maps="/app/PCLA/pcla_agents/${agent}/birds_eye_view"; \
         for map_cache in maps_2ppm_cv maps_4ppm_cv maps_8ppm_cv maps_high_res; do \
             ln -s "${canonical_maps}/${map_cache}" "${agent_maps}/${map_cache}"; \
         done; \
     done; \
     ln -s "${canonical_maps}/maps_2ppm_cv" \
-        /app/PCLA-wrapper/PCLA/pcla_agents/carl/birds_eye_view/maps_2ppm_cv; \
+        /app/PCLA/pcla_agents/carl/birds_eye_view/maps_2ppm_cv; \
     ln -s "${canonical_maps}/maps_2ppm_cv" \
-        /app/PCLA-wrapper/PCLA/pcla_agents/transfuserv6/lead/expert/hdmap/maps_2ppm_cv; \
-    canonical_speed_limits=/app/PCLA-wrapper/PCLA/pcla_agents/plant/carla_garage/speed_limits; \
+        /app/PCLA/pcla_agents/transfuserv6/lead/expert/hdmap/maps_2ppm_cv; \
+    canonical_speed_limits=/app/PCLA/pcla_agents/plant/carla_garage/speed_limits; \
     for agent_speed_limits in \
-        /app/PCLA-wrapper/PCLA/pcla_agents/plant2/carla_garage/speed_limits \
-        /app/PCLA-wrapper/PCLA/pcla_agents/simlingo/speed_limits \
-        /app/PCLA-wrapper/PCLA/pcla_agents/transfuserv5/speed_limits; \
+        /app/PCLA/pcla_agents/plant2/carla_garage/speed_limits \
+        /app/PCLA/pcla_agents/simlingo/speed_limits \
+        /app/PCLA/pcla_agents/transfuserv5/speed_limits; \
     do \
         for speed_limit in "${canonical_speed_limits}"/*_speed_limits.npy; do \
             ln -s "${speed_limit}" "${agent_speed_limits}/$(basename "${speed_limit}")"; \
@@ -91,20 +91,20 @@ RUN set -eux; \
         wor_pretrained; \
     do \
         ln -s "/opt/pcla-pretrained/${name}" \
-            "/app/PCLA-wrapper/PCLA/pcla_agents/${name}"; \
+            "/app/PCLA/pcla_agents/${name}"; \
     done
 RUN uv pip install --python /opt/conda/envs/PCLA/bin/python \
         --find-links https://data.pyg.org/whl/torch-2.2.0+cu121.html \
         "torch-scatter==2.1.2" \
         "ftfy==6.1.1" \
     && uv pip install --python /opt/conda/envs/PCLA/bin/python --no-deps \
-        --editable /app/PCLA-wrapper/PCLA/pcla_agents/lmdrive/vision_encoder \
-        --editable /app/PCLA-wrapper/PCLA/pcla_agents/lmdrive/LAVIS
-RUN test -f /app/PCLA-wrapper/PCLA/PCLA.py \
+        --editable /app/PCLA/pcla_agents/lmdrive/vision_encoder \
+        --editable /app/PCLA/pcla_agents/lmdrive/LAVIS
+RUN test -f /app/PCLA/PCLA.py \
     && grep -q 'map_name == "OpenDriveMap"' \
-        /app/PCLA-wrapper/PCLA/pcla_agents/plant2/carla_garage/privileged_route_planner.py \
+        /app/PCLA/pcla_agents/plant2/carla_garage/privileged_route_planner.py \
     && grep -q 'MapImage.draw_map_image' \
-        /app/PCLA-wrapper/PCLA/pcla_agents/plant2/carla_garage/birds_eye_view/chauffeurnet.py \
+        /app/PCLA/pcla_agents/plant2/carla_garage/birds_eye_view/chauffeurnet.py \
     && chmod +x \
         /app/entrypoint.sh \
         /app/carla_server.sh \

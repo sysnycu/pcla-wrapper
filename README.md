@@ -18,8 +18,8 @@ The server exposes the standard `pisa-api>=0.3.0` AV lifecycle:
 - `Stop`: idempotently clean PCLA-owned sensors and wrapper-owned actors while
   keeping the container-owned CARLA process available for the next Init/Reset.
 
-The Python package is `pcla_wrapper`. `PCLA-wrapper/` only contains legacy
-entry-point shims and the upstream PCLA submodule.
+The Python package is `pcla_wrapper`. The upstream PCLA fork is checked out as
+the top-level `PCLA/` submodule.
 
 ## Runtime Contract
 
@@ -60,9 +60,9 @@ Examples:
 - `tfv6_regnet`
 - `neat_neat`
 
-Names are validated against `PCLA-wrapper/PCLA/agents.json` before model import.
+Names are validated against `PCLA/agents.json` before model import.
 Weights and agent-specific configuration must exist at the paths referenced by
-that registry, normally below `PCLA-wrapper/PCLA/pcla_agents/*_pretrained`.
+that registry, normally below `PCLA/pcla_agents/*_pretrained`.
 The official archive is kept outside the image and mounted read-only because it
 expands to more than 40 GiB. Build-time links point the upstream PCLA paths to
 the fixed `/opt/pcla-pretrained` runtime mount.
@@ -78,7 +78,7 @@ Use [config_example.yaml](config_example.yaml). The canonical interface is flat:
 
 ```yaml
 pcla_agent: carl_plant_3
-pcla_root: /app/PCLA-wrapper/PCLA
+pcla_root: /app/PCLA
 route_xml_path: null
 launch_carla_server: true
 carla_connect_timeout_seconds: 30.0
@@ -161,7 +161,7 @@ docker run --rm --gpus all --network host \
   -v "$HOME/.Xauthority":/home/carla/.Xauthority:ro \
   -v /path/to/xodr:/mnt/map/xodr:ro \
   -v /path/to/output:/mnt/output \
-  -v "$PWD/PCLA-wrapper/PCLA/pcla_agents:/opt/pcla-pretrained:ro" \
+  -v "$PWD/PCLA/pcla_agents:/opt/pcla-pretrained:ro" \
   pcla-wrapper
 ```
 

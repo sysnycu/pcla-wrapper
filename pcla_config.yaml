@@ -2,7 +2,7 @@
 # See config_example.yaml for all supported keys and docs/configuration.md for
 # precedence, validation, and legacy nested-config behavior.
 pcla_agent: carl_plant_3
-pcla_root: /app/PCLA-wrapper/PCLA
+pcla_root: /app/PCLA
 pcla_runtime_dir: null
 route_xml_path: null
 route_waypoint_distance: 2.0

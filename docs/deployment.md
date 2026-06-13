@@ -97,7 +97,7 @@ docker run --rm --gpus all --network host \
   -v "$HOME/.Xauthority":/home/carla/.Xauthority:ro \
   -v /host/maps:/mnt/map/xodr:ro \
   -v /host/output:/mnt/output \
-  -v "$PWD/PCLA-wrapper/PCLA/pcla_agents:/opt/pcla-pretrained:ro" \
+  -v "$PWD/PCLA/pcla_agents:/opt/pcla-pretrained:ro" \
   pcla-wrapper
 ```
 

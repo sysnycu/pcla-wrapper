@@ -124,7 +124,7 @@ This compatibility form remains accepted:
 ```yaml
 pcla:
   agent: carl_plant_3
-  pcla_root: /app/PCLA-wrapper/PCLA
+  pcla_root: /app/PCLA
   route_path: null
 
 carla:

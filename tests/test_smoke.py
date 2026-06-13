@@ -319,10 +319,9 @@ def test_pretrained_weights_are_external_and_reproducible():
     gitmodules = Path(".gitmodules").read_text(encoding="utf-8")
     downloader = Path("scripts/download_pcla_pretrained.sh").read_text(encoding="utf-8")
 
-    assert "PCLA-wrapper/PCLA/pcla_agents/*_pretrained/" in dockerignore
+    assert "PCLA/pcla_agents/*_pretrained/" in dockerignore
     assert (
-        "PCLA-wrapper/PCLA/pcla_agents/plant*/carla_garage/speed_limits/"
-        "OpenDriveMap_speed_limits.npy"
+        "PCLA/pcla_agents/plant*/carla_garage/speed_limits/OpenDriveMap_speed_limits.npy"
     ) in dockerignore
     assert 'ln -s "/opt/pcla-pretrained/${name}"' in dockerfile
     assert "ENV PCLA_PRETRAINED_ROOT=/opt/pcla-pretrained" in dockerfile
@@ -338,39 +337,52 @@ def test_pretrained_weights_are_external_and_reproducible():
     assert "scripts/validate_pcla_pretrained.py" in downloader
 
 
+def test_repository_uses_unambiguous_wrapper_and_upstream_paths():
+    gitmodules = Path(".gitmodules").read_text(encoding="utf-8")
+    dockerfile = Path("Dockerfile").read_text(encoding="utf-8")
+
+    assert Path("pcla_wrapper").is_dir()
+    assert Path("PCLA").is_dir()
+    assert not Path("PCLA-wrapper").exists()
+    assert '[submodule "PCLA"]' in gitmodules
+    assert "path = PCLA" in gitmodules
+    assert "/app/PCLA/" in dockerfile
+    assert "PCLA-wrapper" not in dockerfile
+
+
 def test_duplicate_map_assets_are_deduplicated_in_the_image():
     dockerfile = Path("Dockerfile").read_text(encoding="utf-8")
     dockerignore = Path(".dockerignore").read_text(encoding="utf-8")
 
     duplicate_map_paths = (
-        "PCLA-wrapper/PCLA/pcla_agents/simlingo/birds_eye_view/maps_2ppm_cv/",
-        "PCLA-wrapper/PCLA/pcla_agents/simlingo/birds_eye_view/maps_4ppm_cv/",
-        "PCLA-wrapper/PCLA/pcla_agents/simlingo/birds_eye_view/maps_8ppm_cv/",
-        "PCLA-wrapper/PCLA/pcla_agents/simlingo/birds_eye_view/maps_high_res/",
-        "PCLA-wrapper/PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_2ppm_cv/",
-        "PCLA-wrapper/PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_4ppm_cv/",
-        "PCLA-wrapper/PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_8ppm_cv/",
-        "PCLA-wrapper/PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_high_res/",
-        "PCLA-wrapper/PCLA/pcla_agents/carl/birds_eye_view/maps_2ppm_cv/",
-        ("PCLA-wrapper/PCLA/pcla_agents/transfuserv6/lead/expert/hdmap/maps_2ppm_cv/"),
+        "PCLA/pcla_agents/simlingo/birds_eye_view/maps_2ppm_cv/",
+        "PCLA/pcla_agents/simlingo/birds_eye_view/maps_4ppm_cv/",
+        "PCLA/pcla_agents/simlingo/birds_eye_view/maps_8ppm_cv/",
+        "PCLA/pcla_agents/simlingo/birds_eye_view/maps_high_res/",
+        "PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_2ppm_cv/",
+        "PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_4ppm_cv/",
+        "PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_8ppm_cv/",
+        "PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_high_res/",
+        "PCLA/pcla_agents/carl/birds_eye_view/maps_2ppm_cv/",
+        ("PCLA/pcla_agents/transfuserv6/lead/expert/hdmap/maps_2ppm_cv/"),
     )
     for path in duplicate_map_paths:
         assert path in dockerignore
 
     duplicate_speed_limit_paths = (
-        ("PCLA-wrapper/PCLA/pcla_agents/plant2/carla_garage/speed_limits/*_speed_limits.npy"),
-        "PCLA-wrapper/PCLA/pcla_agents/simlingo/speed_limits/*_speed_limits.npy",
-        ("PCLA-wrapper/PCLA/pcla_agents/transfuserv5/speed_limits/*_speed_limits.npy"),
+        ("PCLA/pcla_agents/plant2/carla_garage/speed_limits/*_speed_limits.npy"),
+        "PCLA/pcla_agents/simlingo/speed_limits/*_speed_limits.npy",
+        ("PCLA/pcla_agents/transfuserv5/speed_limits/*_speed_limits.npy"),
     )
     for path in duplicate_speed_limit_paths:
         assert path in dockerignore
 
-    assert "canonical_maps=/app/PCLA-wrapper/PCLA/pcla_agents/plant2/" in dockerfile
-    assert "canonical_speed_limits=/app/PCLA-wrapper/PCLA/pcla_agents/plant/" in dockerfile
+    assert "canonical_maps=/app/PCLA/pcla_agents/plant2/" in dockerfile
+    assert "canonical_speed_limits=/app/PCLA/pcla_agents/plant/" in dockerfile
 
 
 def test_plant_route_planner_uses_world_coordinates():
-    source = Path("PCLA-wrapper/PCLA/pcla_agents/plant/PlanT_agent.py").read_text(encoding="utf-8")
+    source = Path("PCLA/pcla_agents/plant/PlanT_agent.py").read_text(encoding="utf-8")
     assert "set_route(self._global_plan_world_coord, False)" in source
     assert "set_route(self._global_plan, True)" not in source
     assert "downsample_route(global_plan_world_coord, 50)" in source
@@ -379,9 +391,9 @@ def test_plant_route_planner_uses_world_coordinates():
 
 
 def test_plant_privileged_route_index_tracks_actual_prefix():
-    source = Path(
-        "PCLA-wrapper/PCLA/pcla_agents/plant/carla_garage/privileged_route_planner.py"
-    ).read_text(encoding="utf-8")
+    source = Path("PCLA/pcla_agents/plant/carla_garage/privileged_route_planner.py").read_text(
+        encoding="utf-8"
+    )
     assert "self.route_index = 0" in source
     assert "self.route_index += self.points_per_meter" in source
 
@@ -389,7 +401,7 @@ def test_plant_privileged_route_index_tracks_actual_prefix():
 def test_plant_planners_compute_dynamic_opendrive_speed_limits():
     for agent in ("plant", "plant2"):
         source = Path(
-            f"PCLA-wrapper/PCLA/pcla_agents/{agent}/carla_garage/privileged_route_planner.py"
+            f"PCLA/pcla_agents/{agent}/carla_garage/privileged_route_planner.py"
         ).read_text(encoding="utf-8")
         assert 'map_name == "OpenDriveMap"' in source
         assert "carla_map.to_opendrive()" in source
@@ -400,11 +412,11 @@ def test_plant_planners_compute_dynamic_opendrive_speed_limits():
 
 
 def test_plant2_generates_bev_masks_for_dynamic_opendrive_maps():
-    manager = Path(
-        "PCLA-wrapper/PCLA/pcla_agents/plant2/carla_garage/birds_eye_view/chauffeurnet.py"
-    ).read_text(encoding="utf-8")
+    manager = Path("PCLA/pcla_agents/plant2/carla_garage/birds_eye_view/chauffeurnet.py").read_text(
+        encoding="utf-8"
+    )
     generator = Path(
-        "PCLA-wrapper/PCLA/pcla_agents/plant2/carla_garage/birds_eye_view/birdview_map_opencv.py"
+        "PCLA/pcla_agents/plant2/carla_garage/birds_eye_view/birdview_map_opencv.py"
     ).read_text(encoding="utf-8")
 
     assert 'self._town != "OpenDriveMap"' in manager
@@ -416,19 +428,19 @@ def test_plant2_generates_bev_masks_for_dynamic_opendrive_maps():
 
 
 def test_carl_generates_bev_masks_for_dynamic_opendrive_maps():
-    manager = Path(
-        "PCLA-wrapper/PCLA/pcla_agents/carl/birds_eye_view/bev_observation.py"
-    ).read_text(encoding="utf-8")
-    roach_manager = Path(
-        "PCLA-wrapper/PCLA/pcla_agents/carl/birds_eye_view/chauffeurnet.py"
-    ).read_text(encoding="utf-8")
-    generator = Path(
-        "PCLA-wrapper/PCLA/pcla_agents/carl/birds_eye_view/birdview_map_opencv.py"
-    ).read_text(encoding="utf-8")
-    agent = Path("PCLA-wrapper/PCLA/pcla_agents/carl/eval_agent.py").read_text(encoding="utf-8")
-    red_light = Path(
-        "PCLA-wrapper/PCLA/pcla_agents/carl/reward/criteria/run_red_light.py"
-    ).read_text(encoding="utf-8")
+    manager = Path("PCLA/pcla_agents/carl/birds_eye_view/bev_observation.py").read_text(
+        encoding="utf-8"
+    )
+    roach_manager = Path("PCLA/pcla_agents/carl/birds_eye_view/chauffeurnet.py").read_text(
+        encoding="utf-8"
+    )
+    generator = Path("PCLA/pcla_agents/carl/birds_eye_view/birdview_map_opencv.py").read_text(
+        encoding="utf-8"
+    )
+    agent = Path("PCLA/pcla_agents/carl/eval_agent.py").read_text(encoding="utf-8")
+    red_light = Path("PCLA/pcla_agents/carl/reward/criteria/run_red_light.py").read_text(
+        encoding="utf-8"
+    )
 
     assert "map_name != 'OpenDriveMap'" in manager
     assert "MapImage.draw_map_image(" in manager
@@ -443,14 +455,14 @@ def test_carl_generates_bev_masks_for_dynamic_opendrive_maps():
 
 
 def test_neat_agents_use_world_route_in_native_coordinate_frame():
-    planner = Path("PCLA-wrapper/PCLA/pcla_agents/neat/planner.py").read_text(encoding="utf-8")
+    planner = Path("PCLA/pcla_agents/neat/planner.py").read_text(encoding="utf-8")
     assert "def set_route_world(self, global_plan):" in planner
     assert "np.array([-location.y, location.x])" in planner
 
     for agent_path in (
-        "PCLA-wrapper/PCLA/pcla_agents/neat/neat_agent.py",
-        "PCLA-wrapper/PCLA/pcla_agents/neat/aim_mt_2d_agent.py",
-        "PCLA-wrapper/PCLA/pcla_agents/neat/aim_mt_bev_agent.py",
+        "PCLA/pcla_agents/neat/neat_agent.py",
+        "PCLA/pcla_agents/neat/aim_mt_2d_agent.py",
+        "PCLA/pcla_agents/neat/aim_mt_bev_agent.py",
     ):
         source = Path(agent_path).read_text(encoding="utf-8")
         assert "set_route_world(self._global_plan_world_coord)" in source
@@ -1258,7 +1270,7 @@ def load_upstream_pcla(monkeypatch):
             setattr(module, name, value)
         monkeypatch.setitem(sys.modules, "leaderboard_codes." + suffix, module)
 
-    path = Path("PCLA-wrapper/PCLA/PCLA.py").resolve()
+    path = Path("PCLA/PCLA.py").resolve()
     spec = importlib.util.spec_from_file_location("pcla_upstream_test", path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -1413,8 +1425,6 @@ def test_no_production_sbsvf_or_debug_prints():
     production = [
         Path("pcla_wrapper/pcla_av.py"),
         Path("pcla_wrapper/server.py"),
-        Path("PCLA-wrapper/PCLA_agent.py"),
-        Path("PCLA-wrapper/server.py"),
     ]
     sources = [path.read_text(encoding="utf-8") for path in production]
     combined = "\n".join(sources)

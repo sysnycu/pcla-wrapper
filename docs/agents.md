@@ -1,7 +1,7 @@
 # Agents And Weights
 
 PCLA agent selection is dynamic. The wrapper validates the requested name
-against `PCLA-wrapper/PCLA/agents.json` during Init and imports the model only
+against `PCLA/agents.json` during Init and imports the model only
 during Reset.
 
 ## Naming
@@ -41,9 +41,9 @@ Weights must exist at the path expected by the selected registry entry. Common
 locations are:
 
 ```text
-PCLA-wrapper/PCLA/pcla_agents/*_pretrained/
-PCLA-wrapper/PCLA/pcla_agents/plant/config/
-PCLA-wrapper/PCLA/pcla_agents/plant/weights/
+PCLA/pcla_agents/*_pretrained/
+PCLA/pcla_agents/plant/config/
+PCLA/pcla_agents/plant/weights/
 ```
 
 Download and validate the official PCLA archive from the repository root:
@@ -64,7 +64,7 @@ are excluded from Docker builds and mounted read-only:
 docker run --rm --gpus all --network host \
   -v /host/maps:/mnt/map/xodr:ro \
   -v /host/output:/mnt/output \
-  -v "$PWD/PCLA-wrapper/PCLA/pcla_agents:/opt/pcla-pretrained:ro" \
+  -v "$PWD/PCLA/pcla_agents:/opt/pcla-pretrained:ro" \
   pcla-wrapper
 ```
 

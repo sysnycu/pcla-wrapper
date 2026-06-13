@@ -1,4 +1,4 @@
-[submodule "PCLA-wrapper/PCLA"]
-	path = PCLA-wrapper/PCLA
+[submodule "PCLA"]
+	path = PCLA
 	url = https://github.com/sysnycu/PCLA.git
 	branch = pisa-integration

@@ -20,7 +20,7 @@ pisa-api = { git = "https://github.com/pisa-hut/pisa-api.git" }
 [tool.ruff]
 line-length = 100
 target-version = "py38"
-extend-exclude = ["PCLA-wrapper/PCLA"]
+extend-exclude = ["PCLA"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]

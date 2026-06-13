@@ -3,7 +3,7 @@ set -euo pipefail
 
 readonly ARCHIVE_URL="${PCLA_PRETRAINED_URL:-https://huggingface.co/datasets/MasoudJTehrani/PCLA/resolve/main/pretrained.zip}"
 readonly ARCHIVE_SHA256="${PCLA_PRETRAINED_SHA256:-0d02c1aaf9ea81b892fef8815c1a8ab617c1906b89ee984ba8163332d659fa93}"
-readonly DESTINATION="${1:-PCLA-wrapper/PCLA/pcla_agents}"
+readonly DESTINATION="${1:-PCLA/pcla_agents}"
 readonly ARCHIVE="${PCLA_PRETRAINED_ARCHIVE:-/tmp/pcla-pretrained.zip}"
 
 command -v curl >/dev/null

@@ -11,25 +11,25 @@ output/
 # PCLA's official archive expands to more than 40 GiB. Keep weights on the
 # host and mount pcla_agents at /opt/pcla-pretrained; entrypoint.sh links only
 # the *_pretrained directories into the image's PCLA source tree.
-PCLA-wrapper/PCLA/pcla_agents/*_pretrained/
-PCLA-wrapper/PCLA/pcla_agents/plant*/carla_garage/speed_limits/OpenDriveMap_speed_limits.npy
+PCLA/pcla_agents/*_pretrained/
+PCLA/pcla_agents/plant*/carla_garage/speed_limits/OpenDriveMap_speed_limits.npy
 
 # Several agents vendor byte-identical CARLA Garage map caches. Keep one
 # canonical copy under plant2 and restore the expected paths with symlinks in
 # the image.
-PCLA-wrapper/PCLA/pcla_agents/simlingo/birds_eye_view/maps_2ppm_cv/
-PCLA-wrapper/PCLA/pcla_agents/simlingo/birds_eye_view/maps_4ppm_cv/
-PCLA-wrapper/PCLA/pcla_agents/simlingo/birds_eye_view/maps_8ppm_cv/
-PCLA-wrapper/PCLA/pcla_agents/simlingo/birds_eye_view/maps_high_res/
-PCLA-wrapper/PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_2ppm_cv/
-PCLA-wrapper/PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_4ppm_cv/
-PCLA-wrapper/PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_8ppm_cv/
-PCLA-wrapper/PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_high_res/
-PCLA-wrapper/PCLA/pcla_agents/carl/birds_eye_view/maps_2ppm_cv/
-PCLA-wrapper/PCLA/pcla_agents/transfuserv6/lead/expert/hdmap/maps_2ppm_cv/
+PCLA/pcla_agents/simlingo/birds_eye_view/maps_2ppm_cv/
+PCLA/pcla_agents/simlingo/birds_eye_view/maps_4ppm_cv/
+PCLA/pcla_agents/simlingo/birds_eye_view/maps_8ppm_cv/
+PCLA/pcla_agents/simlingo/birds_eye_view/maps_high_res/
+PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_2ppm_cv/
+PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_4ppm_cv/
+PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_8ppm_cv/
+PCLA/pcla_agents/transfuserv5/birds_eye_view/maps_high_res/
+PCLA/pcla_agents/carl/birds_eye_view/maps_2ppm_cv/
+PCLA/pcla_agents/transfuserv6/lead/expert/hdmap/maps_2ppm_cv/
 
 # The official Town speed-limit arrays are also identical. Keep plant's copy;
 # agent-specific scripts and diagnostic images remain in the context.
-PCLA-wrapper/PCLA/pcla_agents/plant2/carla_garage/speed_limits/*_speed_limits.npy
-PCLA-wrapper/PCLA/pcla_agents/simlingo/speed_limits/*_speed_limits.npy
-PCLA-wrapper/PCLA/pcla_agents/transfuserv5/speed_limits/*_speed_limits.npy
+PCLA/pcla_agents/plant2/carla_garage/speed_limits/*_speed_limits.npy
+PCLA/pcla_agents/simlingo/speed_limits/*_speed_limits.npy
+PCLA/pcla_agents/transfuserv5/speed_limits/*_speed_limits.npy

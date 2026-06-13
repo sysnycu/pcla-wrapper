@@ -327,7 +327,7 @@ class PclaAV:
                 os.chdir(previous_dir)
 
     def _parse_config(self) -> None:
-        default_root = Path(__file__).resolve().parents[1] / "PCLA-wrapper" / "PCLA"
+        default_root = Path(__file__).resolve().parents[1] / "PCLA"
         self._pcla_root = Path(self.config.get("pcla_root", default_root)).resolve()
         self._agent_name = str(
             os.environ.get("PCLA_AGENT", self.config.get("pcla_agent", "carl_plant_3"))
@@ -504,8 +504,9 @@ class PclaAV:
         if str(self._pcla_root) not in sys.path:
             sys.path.insert(0, str(self._pcla_root))
         try:
-            import PCLA
             from leaderboard_codes.carla_data_provider import CarlaDataProvider
+
+            import PCLA
         except Exception as exc:
             raise AvUnavailable(f"Failed to import PCLA from {self._pcla_root}") from exc
         self._pcla_module = PCLA
