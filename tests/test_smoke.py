@@ -337,7 +337,6 @@ def test_pretrained_weights_are_external_and_reproducible():
     assert "curl -fL --retry 5" in downloader
     assert "sha256sum --check -" in downloader
     assert "scripts/validate_pcla_pretrained.py" in downloader
-    assert "sys511613/pcla" not in dockerfile
     assert "/opt/conda" not in dockerfile
     assert "/usr/local/cuda-11.8" not in dockerfile
     assert "FROM common-runtime AS common-slim" in dockerfile

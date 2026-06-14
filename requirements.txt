@@ -1,5 +1,5 @@
-# Legacy PCLA base-image dependency inventory.
+# Legacy PCLA dependency inventory.
 #
-# Do not install this file into the wrapper environment. The pinned PCLA Docker
-# base supplies model dependencies, while pyproject.toml and uv.lock manage the
-# top-level wrapper dependencies.
+# Do not install this file into the wrapper environment. The common runtime
+# dependencies are maintained under docker/requirements, while pyproject.toml
+# and uv.lock manage the top-level wrapper dependencies.

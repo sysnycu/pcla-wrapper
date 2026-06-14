@@ -15,10 +15,9 @@ The current production target is the `common` image profile:
 - PyTorch 2.2.0+cu121
 - Plant 1.0, Plant 2.0, CaRL, and Roach dependencies
 
-The image is built directly from Ubuntu and CARLA. It does not inherit
-`sys511613/pcla`, include Conda, or install a complete CUDA toolkit. CUDA user
-libraries come from the PyTorch wheels; the host supplies the NVIDIA driver
-through `--gpus all`.
+The image is built directly from Ubuntu and CARLA. Python dependencies are
+installed into `/opt/pcla-venv`, CUDA user libraries come from the PyTorch
+wheels, and the host supplies the NVIDIA driver through `--gpus all`.
 
 The supported `pcla_agent` values are:
 
